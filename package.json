@@ -6,10 +6,32 @@
     "dev": "bun run --watch src/index.ts"
   },
   "dependencies": {
-    "elysia": "latest"
+    "@elysiajs/swagger": "^1.1.0",
+    "@prisma/client": "^5.17.0",
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
+    "elysia": "^1.1.4",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.12.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.3"
   },
   "devDependencies": {
-    "bun-types": "latest"
+    "@types/bcrypt": "^5.0.2",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.6",
+    "bun-types": "latest",
+    "prisma": "^5.17.0",
+    "sequelize-cli": "^6.6.2"
   },
-  "module": "src/index.js"
+  "module": "src/index.js",
+  "type": "module",
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "description": "## Getting Started To get started with this template, simply paste this command into your terminal: ```bash bun create elysia ./elysia-example ```",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

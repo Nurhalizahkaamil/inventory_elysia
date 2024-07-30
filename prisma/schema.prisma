@@ -1,0 +1,117 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  title     String   @db.VarChar(255)
+  content   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("posts")
+}
+
+model SuperAdmin {
+  id       Int    @id @default(autoincrement())
+  username String @unique @db.VarChar(255)
+  password String @db.VarChar(255)
+  email    String @db.VarChar(255)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("super_admin")
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  username String @unique @db.VarChar(255)
+  nama     String @db.VarChar(255)
+  password String @db.VarChar(255)
+  email    String @db.VarChar(255)
+  role     String @db.VarChar(255)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  superAdminId Int?  @map("super_admin_id")
+
+  @@map("user")
+}
+
+model Obat {
+  id          Int      @id @default(autoincrement())
+  nama_obat   String   @db.VarChar(255)
+  jenis_obat  String   @db.VarChar(255)
+  harga_jual  Decimal  @db.Decimal(10, 2) 
+  harga_beli  Decimal  @db.Decimal(10, 2) 
+  deskripsi   String   @db.Text
+  expired     DateTime @db.Date
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  kategoriId  Int?     @map("kategori_id")
+  stok        StokObat[]
+  obatMasuk    ObatMasuk[]
+  obatKeluar   ObatKeluar?
+
+  @@map("obat")
+  KategoriObat KategoriObat[]
+}
+
+model KategoriObat {
+  id       Int      @id @default(autoincrement())
+  nama     String   @db.VarChar(255)
+  deskripsi String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  obat      Obat[]
+
+  @@map("kategori_obat")
+}
+
+model StokObat {
+  id          Int      @id @default(autoincrement())
+  obatId      Int      @map("obat_id")
+  satuan      String?   
+  jumlah_stok Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  obat        Obat     @relation(fields: [obatId], references: [id])
+
+  @@map("stok_obat")
+}
+
+model ObatMasuk {
+  id        Int      @id @default(autoincrement())
+  obatId    Int      @unique @map("obat_id")  // Ensure uniqueness
+  jumlah    Int
+  tanggal   DateTime @db.Date
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  obat      Obat     @relation(fields: [obatId], references: [id])
+
+  @@map("obat_masuk")
+}
+
+
+model ObatKeluar {
+  id        Int      @id @default(autoincrement())
+  obatId    Int      @unique @map("obat_id")  // Ensure uniqueness
+  jumlah    Int
+  tanggal   DateTime @db.Date
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  obat      Obat     @relation(fields: [obatId], references: [id])
+
+  @@map("obat_keluar")
+}
+
+
+
+
